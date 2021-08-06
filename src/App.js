@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
+import "./App.css";
+import { ThemeProvider as MuiThemeProvider } from "@material-ui/core";
+import { createTheme } from "@material-ui/core/styles";
+import Home from "./pages/Home";
+
+import { Provider } from "react-redux";
+import store from "./store";
+import { ReactReduxFirebaseProvider } from "react-redux-firebase";
+import { createFirestoreInstance } from "redux-firestore";
+import firebase from "./firebase/firebase";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Switch>
+      <Route path="/" component={Home} />
+    </Switch>
   );
 }
 
