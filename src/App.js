@@ -1,22 +1,21 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import {connect} from 'react-redux';
 import "./App.css";
-import { ThemeProvider as MuiThemeProvider } from "@material-ui/core";
-import { createTheme } from "@material-ui/core/styles";
 import Home from "./pages/Home";
-
-import { Provider } from "react-redux";
-import store from "./store";
-import { ReactReduxFirebaseProvider } from "react-redux-firebase";
-import { createFirestoreInstance } from "redux-firestore";
-import firebase from "./firebase/firebase";
+import Navbar from "./components/Navbar/Navbar";
+import SignUp from "./pages/SignUp";
 
 function App() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-    </Switch>
+    <Fragment>
+      <Navbar />
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/signup" component={SignUp} />
+      </Switch>
+    </Fragment>
   );
 }
 
-export default App;
+export default connect()(App);
