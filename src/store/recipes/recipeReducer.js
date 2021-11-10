@@ -38,7 +38,7 @@ export default (state = initialState, { type, payload }) => {
         loading: false,
         error: false,
       };
-    case actions.GET_RECIPE_FAIL:
+    case actions.CREATE_RECIPE_FAIL:
       return {
         ...state,
         loading: false,

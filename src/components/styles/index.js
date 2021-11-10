@@ -22,14 +22,10 @@ export const FormWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   text-align: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   border: 5px solid var(--color-second);
   padding: 5rem;
   border-radius: 15px;
-  margin-top: 10rem;
+  margin-top: 3rem;
 
   @media only screen and (max-width: 425px) {
     width: 75%;

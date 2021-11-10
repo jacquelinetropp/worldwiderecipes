@@ -1,15 +1,16 @@
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import {getRecipes} from '../store/recipes/recipeActions';
+import LinkButton from '../components/Button/LinkButton';
 
 const Home = ({getRecipes, recipes}) => {
-    useEffect(() => {
-        getRecipes();
-    }, [])
-    console.log(recipes);
+    // useEffect(() => {
+    //     getRecipes();
+    // }, [])
+    // console.log(recipes);
     return (
         <div>
-            hello
+            <LinkButton to="/addrecipe">Add Recipe</LinkButton>
         </div>
     )
 }

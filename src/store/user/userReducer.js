@@ -7,7 +7,8 @@ const initialState = {
     loading: false,
     error: null,
     items: []
-  }
+  },
+  user: null
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -22,6 +23,7 @@ export default (state = initialState, { type, payload }) => {
         ...state,
         loading: false,
         error: false,
+        user: payload
       };
     case actions.AUTH_FAIL:
       return {

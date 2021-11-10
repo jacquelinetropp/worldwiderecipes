@@ -1,37 +1,56 @@
 import * as actions from "./userTypes";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { collection, doc, setDoc, getFirestore } from "firebase/firestore"; 
 
-export const signUp =
-  (data) =>
-  async (dispatch, getState ) => {
-    const firestore = getFirestore();
-    dispatch({ type: actions.AUTH_START });
-    try {
-      // const res = await firebase
-      //   .auth()
-      //   .createUserWithEmailAndPassword(data.email, data.password);
+export const signUp = (data) => async (dispatch, getState, { getFirebase, getFirestore}) => {
+  const firebase = getFirebase();
+  const firestore = getFirestore();
+  dispatch({ type: actions.AUTH_START });
+  try {
+    const res = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(data.email, data.password);
 
-      const auth = getAuth();
-      const res = createUserWithEmailAndPassword(auth, data.email, data.password);
-      const uid = getState().firebase.auth.uid;
+    // const auth = getAuth();
+    // createUserWithEmailAndPassword(
+    //   auth,
+    //   data.email,
+    //   data.password
+    // ).then((userCredentials) => {
+    //   console.log(userCredentials);
+    //   const uid = userCredentials.uid;
+    //   signInWithEmailAndPassword(auth, data.email, data.password);
 
-      await setDoc(doc(firestore, "users", uid), {
-        firstName: data.firstName,
-        lastName: data.lastName,
-      })
+    //   onAuthStateChanged(auth, (user) => {
+    //     console.log("logged in");
+    //     console.log(user.uid);
+    //     dispatch({ type: actions.AUTH_SUCCESS, payload: user.uid });
+    //   })
 
-      // await firestore.collection("users").doc(res.user.uid).set({
+      // console.log(data);
+
+      // setDoc(doc(firestore, "users", uid), {
       //   firstName: data.firstName,
       //   lastName: data.lastName,
       // });
+    // });
 
-      dispatch({ type: actions.AUTH_SUCCESS });
-    } catch (err) {
-      dispatch({ type: actions.AUTH_FAIL, payload: err.message });
-    }
-    dispatch({ type: actions.AUTH_END });
-  };
+    // const uid = getState().firebase.auth.uid;
+
+    // await setDoc(doc(firestore, "users", uid), {
+    //   firstName: data.firstName,
+    //   lastName: data.lastName,
+    // })
+
+    await firestore.collection("users").doc(res.user.uid).set({
+      groupName: data.groupName,
+      contactPerson: data.contactPerson,
+    });
+
+
+  } catch (err) {
+    dispatch({ type: actions.AUTH_FAIL, payload: err.message });
+  }
+  dispatch({ type: actions.AUTH_END });
+};
 
 export const signOut =
   () =>
@@ -57,4 +76,3 @@ export const signIn =
     }
     dispatch({ type: actions.AUTH_END });
   };
-

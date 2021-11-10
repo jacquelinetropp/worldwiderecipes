@@ -17,12 +17,12 @@ const TextWrapper = styled.div`
 `;
 
 const SignUpSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .required("Your first name is required.")
+  groupName: Yup.string()
+    .required("Your group name is required.")
     .min(3, "Too short.")
     .max(25, "Too long."),
-  lastName: Yup.string()
-    .required("Your last name is required.")
+  contactPerson: Yup.string()
+    .required("Your contact person is required.")
     .min(3, "Too short.")
     .max(25, "Too long."),
   email: Yup.string()
@@ -34,17 +34,14 @@ const SignUpSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], `Password doesn't match`)
     .required("You need to confirm your password."),
-  location: Yup.string()
-    .required("Your location is required")
-    .min(3, "Too short."),
 });
 
 const SignUp = ({ signUp, loading, error }) => {
   return (
     <Formik
       initialValues={{
-        firstName: "",
-        lastName: "",
+        groupName: "",
+        contactPerson: "",
         email: "",
         password: "",
         confirmPassword: "",
@@ -57,21 +54,21 @@ const SignUp = ({ signUp, loading, error }) => {
       {({ isSubmitting, isValid }) => (
         <FormWrapper>
           <TextWrapper>
-            <h1>Sign up for an account</h1>
-            <h4>Fill in your details to register your new account</h4>
+            <h1>Sign up for a group account</h1>
+            <h4>Please keep one account per group</h4>
           </TextWrapper>
 
           <StyledForm>
             <Field
               type="text"
-              name="firstName"
-              placeholder="Your first name..."
+              name="groupName"
+              placeholder="Your organization's name..."
               component={Input}
             />
             <Field
               type="text"
-              name="lastName"
-              placeholder="Your last name..."
+              name="contactPerson"
+              placeholder="Person of contact..."
               component={Input}
             />
             <Field
@@ -90,12 +87,6 @@ const SignUp = ({ signUp, loading, error }) => {
               type="password"
               name="confirmPassword"
               placeholder="Re-type your password..."
-              component={Input}
-            />
-            <Field
-              type="text"
-              name="location"
-              placeholder="Enter your zipcode"
               component={Input}
             />
             <Button
