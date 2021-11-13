@@ -1,6 +1,6 @@
 import * as actions from './recipeTypes';
 
-export const createRecipe = (data) => async (dispatch, getState, {getFirestore}) => {
+export const createRecipe = (data, imageUrl) => async (dispatch, getState, {getFirestore}) => {
     const firestore = getFirestore();
     const userId = getState().firebase.auth.uid;
 
@@ -13,7 +13,11 @@ export const createRecipe = (data) => async (dispatch, getState, {getFirestore})
             ingredients: [...data.ingredients],
             amount: [...data.amount],
             size: [...data.size],
-            userId: userId
+            userId: userId,
+            instructions: [...data.instructions],
+            temperature: data.temperature,
+            degrees: data.degrees,
+            image: imageUrl
         }
         await firestore.collection("recipes").add(newRecipe);
         dispatch({type: actions.CREATE_RECIPE_SUCCESS})

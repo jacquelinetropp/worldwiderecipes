@@ -6,12 +6,10 @@ import Input from "./Input";
 
 const Ingredient = styled.div`
   display: flex;
-  height: 35px;
   margin: 1rem;
 `;
 
 const IngredientInput = ({index, remove}) => {
- 
   return (
     <Ingredient>
       <Field type="number" name={`amount[${index}]`} placeholder="Amount" component={Input} />
@@ -26,7 +24,6 @@ const IngredientInput = ({index, remove}) => {
         placeholder="Ingredient name..."
         component={Input}
       />
-      <Button type="button" onClick={() => remove()} contain>Remove</Button>
     </Ingredient>
   );
 };

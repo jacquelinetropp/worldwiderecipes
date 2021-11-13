@@ -8,7 +8,7 @@ const InputWrapper = styled.div`
   margin-bottom: 1.5rem;
   flex-direction: column;
   &:last-of-type {
-    margin-bottom: 4.5rem;
+    margin-bottom: 2.5rem;
   }
 `;
 
@@ -42,7 +42,7 @@ const Error = styled.div`
 
 const Input = ({ field, form: { touched, errors }, ...props }) => {
   return (
-    <InputWrapper>
+    <InputWrapper {...props}>
       <StyledInput {...field} {...props} />
       <Error show={errors[field.name] && touched[field.name]}>
         {errors[field.name]}
