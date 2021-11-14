@@ -8,7 +8,7 @@ const initialState = {
     error: null,
     items: []
   },
-  user: null
+  measurements: ""
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -31,6 +31,12 @@ export default (state = initialState, { type, payload }) => {
         loading: false,
         error: payload,
       };
+
+      case actions.SET_MEASUREMENTS:
+        return {
+          ...state,
+          measurements: payload
+        }
 
     default:
       return state;

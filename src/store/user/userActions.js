@@ -41,8 +41,8 @@ export const signUp = (data) => async (dispatch, getState, { getFirebase, getFir
     // })
 
     await firestore.collection("users").doc(res.user.uid).set({
-      groupName: data.groupName,
-      contactPerson: data.contactPerson,
+      name: data.name,
+      measurements: data.measurements
     });
 
 
@@ -71,6 +71,9 @@ export const signIn =
         .auth()
         .signInWithEmailAndPassword(data.email, data.password);
       dispatch({ type: actions.AUTH_SUCCESS });
+
+      const measurements = getState().firebase.profile.measurements;
+      dispatch({type: actions.SET_MEASUREMENTS, payload: measurements})
     } catch (err) {
       dispatch({ type: actions.AUTH_FAIL, payload: err.message });
     }

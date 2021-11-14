@@ -16,13 +16,16 @@ const TextWrapper = styled.div`
   margin-bottom: 2rem;
 `;
 
+const MeasurementsWrapper = styled.div`
+  display: grid;
+  grid-gap: 1rem;
+  font-size: 2rem;
+  text-align: center;
+`;
+
 const SignUpSchema = Yup.object().shape({
-  groupName: Yup.string()
-    .required("Your group name is required.")
-    .min(3, "Too short.")
-    .max(25, "Too long."),
-  contactPerson: Yup.string()
-    .required("Your contact person is required.")
+  name: Yup.string()
+    .required("Your name is required.")
     .min(3, "Too short.")
     .max(25, "Too long."),
   email: Yup.string()
@@ -40,11 +43,11 @@ const SignUp = ({ signUp, loading, error }) => {
   return (
     <Formik
       initialValues={{
-        groupName: "",
-        contactPerson: "",
+        name: "",
         email: "",
         password: "",
         confirmPassword: "",
+        measurements: "us",
       }}
       validationSchema={SignUpSchema}
       onSubmit={async (values) => {
@@ -54,21 +57,14 @@ const SignUp = ({ signUp, loading, error }) => {
       {({ isSubmitting, isValid }) => (
         <FormWrapper>
           <TextWrapper>
-            <h1>Sign up for a group account</h1>
-            <h4>Please keep one account per group</h4>
+            <h1>Sign up for an account</h1>
           </TextWrapper>
 
           <StyledForm>
             <Field
               type="text"
-              name="groupName"
-              placeholder="Your organization's name..."
-              component={Input}
-            />
-            <Field
-              type="text"
-              name="contactPerson"
-              placeholder="Person of contact..."
+              name="name"
+              placeholder="Your name..."
               component={Input}
             />
             <Field
@@ -89,6 +85,13 @@ const SignUp = ({ signUp, loading, error }) => {
               placeholder="Re-type your password..."
               component={Input}
             />
+            <MeasurementsWrapper>
+              <h6>Measurement preference </h6>
+              <Field as="select" name="measurements">
+                <option value="us">US</option>
+                <option value="metric">Metric</option>
+              </Field>
+            </MeasurementsWrapper>
             <Button
               disabled={!isValid || isSubmitting}
               loading={loading ? "Signing Up" : null}

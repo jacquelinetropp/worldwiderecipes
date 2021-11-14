@@ -12,8 +12,15 @@ import firebase from "../../firebase/firebase";
 
 const RecipeSchema = Yup.object().shape({
   title: Yup.string().required("The name of the recipe is required"),
-  author: Yup.string().required("Please set author of recipe"),
-  temperature: Yup.number().required().positive(),
+  author: Yup.string().required("Please give the author of recipe"),
+  description: Yup.string().required(
+    "Please write a description of your recipe"
+  ),
+  temperature: Yup.number().required("Please give a temperature").positive(),
+  cookingTime: Yup.number().required("Please give a time").positive(),
+  serving: Yup.number()
+    .required("Please write how many people this serves")
+    .positive(),
 });
 
 const Wrapper = styled.div``;
@@ -29,7 +36,6 @@ const TempDiv = styled.div`
   margin-top: 1rem;
   white-space: nowrap;
   align-items: flex-start;
- 
 `;
 const Instructions = styled.div`
   width: 100%;
@@ -42,20 +48,28 @@ const ButtonWrapper = styled.div`
   align-items: center;
   justify-content: center;
 `;
-const RecipeForm = ({ createRecipe, loading }) => {
+
+const Category = styled.div`
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  margin: 1rem 0 2rem 0;
+  gap: 12px;
+`;
+const RecipeForm = ({ createRecipe, loading, userSettings }) => {
   const [number, setNumber] = useState(1);
   const [step, setStep] = useState(1);
 
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
-  const handleIngredientRemove = () => {   
-      setNumber(number - 1);   
+  const handleIngredientRemove = () => {
+    setNumber(number - 1);
   };
 
-  const handleInstructionRemove = () => {   
-    setStep(step - 1);   
-};
+  const handleInstructionRemove = () => {
+    setStep(step - 1);
+  };
 
   //Image Upload
   const handleImage = (e) => {
@@ -63,6 +77,17 @@ const RecipeForm = ({ createRecipe, loading }) => {
       setImage(e.target.files[0]);
     }
   };
+
+  //Degree Settings
+  const degreeSettings = () => {
+    if (userSettings === "us") {
+      return <p>F</p>;
+    } else {
+      return <p>C</p>;
+    }
+  };
+
+  console.log(imageUrl);
 
   const handleUpload = async () => {
     const storage = firebase.storage();
@@ -97,11 +122,20 @@ const RecipeForm = ({ createRecipe, loading }) => {
         temperature: "",
         degrees: "f",
         instructions: [],
+        cookingTime: "",
+        description: "",
+        serving: "",
+        category: "main",
       }}
       validationSchema={RecipeSchema}
       onSubmit={async (values) => {
         console.log(values);
-        await createRecipe(values, imageUrl);
+        await handleUpload().then(async() => {
+          await createRecipe(values, imageUrl);
+        }).catch(e => {
+          console.log(e)
+        })
+     
       }}
     >
       {({ isSubmitting, isValid }) => (
@@ -119,6 +153,35 @@ const RecipeForm = ({ createRecipe, loading }) => {
               placeholder="Your Name"
               component={Input}
             />
+            <Field
+              type="text"
+              name="description"
+              placeholder="Description of recipe"
+              component={Input}
+            />
+            <Field
+              type="number"
+              name="cookingTime"
+              placeholder="How many minutes does this take to cook?"
+              component={Input}
+            />{" "}
+            <Field
+              type="number"
+              name="serving"
+              placeholder="How much does this make?"
+              component={Input}
+            />
+            <Category>
+              <h6>Select a Category</h6>
+              <Field as="select" name="category">
+                <option value="main">Main Dish</option>
+                <option value="soup">Soup</option>
+                <option value="appetizer">Appetizer</option>
+                <option value="salad">Salad</option>
+                <option value="dessert">Dessert</option>
+                <option value="beverage">Beverage</option>
+              </Field>
+            </Category>
             <ImageDiv>
               <Field
                 type="file"
@@ -137,9 +200,7 @@ const RecipeForm = ({ createRecipe, loading }) => {
               </Button>
             </ImageDiv>
             {Array.from(Array(number)).map((c, index) => {
-              return (
-                <IngredientInput key={c} index={index}  />
-              );
+              return <IngredientInput key={c} index={index} />;
             })}
             <ButtonWrapper>
               <Button
@@ -167,11 +228,7 @@ const RecipeForm = ({ createRecipe, loading }) => {
                 placeholder="Oven temperature"
                 component={Input}
               />
-              <Field as="select" name="degrees">
-                <option value="select">Select</option>
-                <option value="f">F</option>
-                <option value="c">C</option>
-              </Field>
+              {degreeSettings()}
             </TempDiv>
             <Instructions>
               <h4>Instructions</h4>
@@ -220,8 +277,9 @@ const RecipeForm = ({ createRecipe, loading }) => {
   );
 };
 
-const mapStateToProps = ({ recipe }) => ({
+const mapStateToProps = ({ recipe, firebase }) => ({
   loading: recipe.loading,
+  userSettings: firebase.profile.measurements,
 });
 
 const mapDispatchToProps = {

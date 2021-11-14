@@ -27,7 +27,6 @@ const Home = ({ getRecipes, recipes }) => {
   useEffect(() => {
     getRecipes();
   }, []);
-  console.log(recipes);
   return (
     <Wrapper>
       <ButtonWrapper>

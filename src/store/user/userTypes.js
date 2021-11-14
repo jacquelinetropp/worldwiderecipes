@@ -19,3 +19,5 @@ export const PROFILE_FAIL = "PROFILE_FAIL";
 export const DELETE_START = "DELETE_START";
 export const DELETE_FAIL = "DELETE_FAIL";
 
+export const SET_MEASUREMENTS = "SET_MEASUREMENTS";
+

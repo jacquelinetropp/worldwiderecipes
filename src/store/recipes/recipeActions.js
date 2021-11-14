@@ -20,6 +20,10 @@ export const createRecipe =
         temperature: data.temperature,
         degrees: data.degrees,
         image: imageUrl,
+        cookingTime: data.cookingTime,
+        description: data.description,
+        serving: data.serving,
+        category: data.category
       };
       await firestore.collection("recipes").add(newRecipe);
       dispatch({ type: actions.CREATE_RECIPE_SUCCESS });
@@ -38,8 +42,7 @@ export const getRecipes =
     dispatch({ type: actions.GET_RECIPE_START });
     try {
       const recipeList = await firestore
-        .collection("recipes")
-        .where("userId", "==", userId);
+        .collection("recipes");
       recipeList.onSnapshot((snapshot) => {
         let recipes = [];
         snapshot.docs.forEach((doc) => {
@@ -49,6 +52,7 @@ export const getRecipes =
             author: doc.data().author,
             amount: doc.data().amount,
             size: doc.data().size,
+            ingredients: doc.data().ingredients,
             userId: doc.data().userId,
             instructions: doc.data().instructions,
             temperature: doc.data().temperature,

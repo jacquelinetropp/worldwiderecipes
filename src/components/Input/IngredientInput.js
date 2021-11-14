@@ -9,7 +9,7 @@ const Ingredient = styled.div`
   margin: 1rem;
 `;
 
-const IngredientInput = ({index, remove}) => {
+const IngredientInput = ({index}) => {
   return (
     <Ingredient>
       <Field type="number" name={`amount[${index}]`} placeholder="Amount" component={Input} />
@@ -17,6 +17,10 @@ const IngredientInput = ({index, remove}) => {
         <option value="select">Select</option>
         <option value="cup">cup</option>
         <option value="tbsp">tbsp</option>
+        <option value="tsp">tsp</option>
+        <option value="oz">oz</option>
+        <option value="lbs">lbs</option>
+        <option value="serving">serving</option>
       </Field>
       <Field
         type="text"
