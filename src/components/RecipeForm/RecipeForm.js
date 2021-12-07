@@ -120,7 +120,7 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
         amount: [],
         size: [],
         temperature: "",
-        degrees: "f",
+        degrees: degreeSettings(),
         instructions: [],
         cookingTime: "",
         description: "",
@@ -130,12 +130,13 @@ const RecipeForm = ({ createRecipe, loading, userSettings }) => {
       validationSchema={RecipeSchema}
       onSubmit={async (values) => {
         console.log(values);
-        await handleUpload().then(async() => {
-          await createRecipe(values, imageUrl);
-        }).catch(e => {
-          console.log(e)
-        })
-     
+        await handleUpload()
+          .then(async () => {
+            await createRecipe(values, imageUrl);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       }}
     >
       {({ isSubmitting, isValid }) => (

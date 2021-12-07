@@ -3,11 +3,6 @@ import * as actions from "./userTypes";
 const initialState = {
   error: null,
   loading: false,
-  orders: {
-    loading: false,
-    error: null,
-    items: []
-  },
   measurements: ""
 };
 
